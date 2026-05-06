@@ -4,49 +4,65 @@
 <meta charset="UTF-8">
 <title>Timer</title>
 
-<!--　 8bitフォント  -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    margin: 0;
-    background: #a8c9d2;
-    color: #ffffff;
-    font-family: 'Press Start 2P', cursive;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+body {
+  margin: 0;
+  background: #a8c9d2;
+  color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  #time {
-    font-size: 32px;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
-  }
+#time {
+  font-size: 32px;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+}
 
-  button {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 14px;
-    padding: 12px 24px;
-    border: 2px solid #ffffff;
-    background: transparent;
-    color: #ffffff;
-    cursor: pointer;
-  }
+button {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  padding: 12px 24px;
+  border: 2px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
 
-  button:active {
-    background: #ffffff;
-    color: #a8c9d2;
-  }
+button:active {
+  transform: scale(0.9);
+  background: #ffffff;
+  color: #a8c9d2;
+}
+
+/* キラキラ */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  animation: pop 0.6s ease-out forwards;
+}
+
+@keyframes pop {
+  0% { transform: scale(0) translate(0,0); opacity: 1; }
+  100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; }
+}
 </style>
 </head>
 
 <body>
 
 <div id="time">00:00:00</div>
-<button id="btn" onclick="toggle()">START</button>
+<button id="btn">START</button>
 
 <script>
 let startTime = 0;
@@ -54,6 +70,55 @@ let elapsed = 0;
 let timer = null;
 let running = false;
 
+const btn = document.getElementById("btn");
+
+/* 🎵 かわいい2音（ピロッ♪） */
+function playBeep() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function tone(freq, start) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "square"; // レトロ感（ここを"sine"にするともっと柔らかい）
+    osc.frequency.value = freq;
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(start);
+    gain.gain.setValueAtTime(0.4, start);
+    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.15);
+    osc.stop(start + 0.15);
+  }
+
+  const now = ctx.currentTime;
+  tone(700, now);
+  tone(1000, now + 0.08);
+}
+
+/* ✨ キラキラ */
+function sparkle() {
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+
+    const x = (Math.random() - 0.5) * 200 + "px";
+    const y = (Math.random() - 0.5) * 200 + "px";
+
+    s.style.setProperty('--x', x);
+    s.style.setProperty('--y', y);
+
+    s.style.left = "50%";
+    s.style.top = "50%";
+
+    document.body.appendChild(s);
+
+    setTimeout(() => s.remove(), 600);
+  }
+}
+
+/* ⏱ タイマー */
 function update() {
   const now = Date.now();
   const diff = now - startTime + elapsed;
@@ -68,8 +133,10 @@ function update() {
     String(s).padStart(2, '0');
 }
 
-function toggle() {
-  const btn = document.getElementById("btn");
+/* ▶ ボタン */
+btn.addEventListener("click", () => {
+  playBeep();
+  sparkle();
 
   if (!running) {
     startTime = Date.now();
@@ -82,7 +149,7 @@ function toggle() {
     running = false;
     btn.textContent = "START";
   }
-}
+});
 </script>
 
 </body>
