@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Timer</title>
+
+<!-- 8bitフォント -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    background: #a8c9d2;
+    color: #ffffff;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  #time {
+    font-size: 32px;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+  }
+
+  button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    padding: 12px 24px;
+    border: 2px solid #ffffff;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  button:active {
+    background: #ffffff;
+    color: #a8c9d2;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="time">00:00:00</div>
+<button id="btn" onclick="toggle()">START</button>
+
+<script>
+let startTime = 0;
+let elapsed = 0;
+let timer = null;
+let running = false;
+
+function update() {
+  const now = Date.now();
+  const diff = now - startTime + elapsed;
+
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
+
+  document.getElementById("time").textContent =
+    String(h).padStart(2, '0') + ":" +
+    String(m).padStart(2, '0') + ":" +
+    String(s).padStart(2, '0');
+}
+
+function toggle() {
+  const btn = document.getElementById("btn");
+
+  if (!running) {
+    startTime = Date.now();
+    timer = setInterval(update, 1000);
+    running = true;
+    btn.textContent = "STOP";
+  } else {
+    clearInterval(timer);
+    elapsed += Date.now() - startTime;
+    running = false;
+    btn.textContent = "START";
+  }
+}
+</script>
+
+</body>
+</html>
