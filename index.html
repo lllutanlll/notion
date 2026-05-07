@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Timer</title>
+<title>Cute Timer</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
@@ -12,12 +12,16 @@ body {
   background: #a8c9d2;
   color: #ffffff;
   font-family: 'Press Start 2P', cursive;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   height: 100vh;
   overflow: hidden;
+
+  position: relative;
 }
 
 #time {
@@ -28,33 +32,77 @@ body {
 
 button {
   font-family: 'Press Start 2P', cursive;
+}
+
+/* START / STOP */
+#btn {
   font-size: 14px;
   padding: 12px 24px;
+
   border: 2px solid #ffffff;
   background: transparent;
   color: #ffffff;
+
   cursor: pointer;
   transition: transform 0.1s;
 }
 
-button:active {
+#btn:active {
   transform: scale(0.9);
   background: #ffffff;
   color: #a8c9d2;
 }
 
+/* RESET */
+#resetBtn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  font-size: 18px;
+
+  background: transparent;
+  border: none;
+
+  color: rgba(255,255,255,0.7);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.1s,
+    opacity 0.2s;
+}
+
+#resetBtn:hover {
+  opacity: 1;
+}
+
+#resetBtn:active {
+  transform: scale(0.8) rotate(-20deg);
+}
+
 /* キラキラ */
 .sparkle {
   position: absolute;
+
   width: 6px;
   height: 6px;
+
   background: white;
+
   animation: pop 0.6s ease-out forwards;
 }
 
 @keyframes pop {
-  0% { transform: scale(0) translate(0,0); opacity: 1; }
-  100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; }
+  0% {
+    transform: scale(0) translate(0,0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5) translate(var(--x), var(--y));
+    opacity: 0;
+  }
 }
 </style>
 </head>
@@ -62,7 +110,10 @@ button:active {
 <body>
 
 <div id="time">00:00:00</div>
+
 <button id="btn">START</button>
+
+<button id="resetBtn">↻</button>
 
 <script>
 let startTime = 0;
@@ -71,8 +122,38 @@ let timer = null;
 let running = false;
 
 const btn = document.getElementById("btn");
+const resetBtn = document.getElementById("resetBtn");
 
-/* 🎵 かわいい2音（ピロッ♪） */
+/* 保存 */
+function saveState() {
+  localStorage.setItem("timer_running", running);
+  localStorage.setItem("timer_startTime", startTime);
+  localStorage.setItem("timer_elapsed", elapsed);
+}
+
+/* 読み込み */
+function loadState() {
+  const savedRunning = localStorage.getItem("timer_running");
+  const savedStart = localStorage.getItem("timer_startTime");
+  const savedElapsed = localStorage.getItem("timer_elapsed");
+
+  if (savedElapsed) {
+    elapsed = parseInt(savedElapsed);
+  }
+
+  if (savedRunning === "true") {
+    running = true;
+    startTime = parseInt(savedStart);
+
+    timer = setInterval(update, 1000);
+
+    btn.textContent = "STOP";
+  }
+
+  update();
+}
+
+/* かわいい音 */
 function playBeep() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -80,31 +161,42 @@ function playBeep() {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    osc.type = "square"; // レトロ感（ここを"sine"にするともっと柔らかい）
+    osc.type = "square";
     osc.frequency.value = freq;
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start(start);
+
     gain.gain.setValueAtTime(0.4, start);
-    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.15);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      start + 0.15
+    );
+
     osc.stop(start + 0.15);
   }
 
   const now = ctx.currentTime;
+
   tone(700, now);
   tone(1000, now + 0.08);
 }
 
-/* ✨ キラキラ */
+/* キラキラ */
 function sparkle() {
   for (let i = 0; i < 10; i++) {
+
     const s = document.createElement("div");
+
     s.className = "sparkle";
 
-    const x = (Math.random() - 0.5) * 200 + "px";
-    const y = (Math.random() - 0.5) * 200 + "px";
+    const x =
+      (Math.random() - 0.5) * 200 + "px";
+
+    const y =
+      (Math.random() - 0.5) * 200 + "px";
 
     s.style.setProperty('--x', x);
     s.style.setProperty('--y', y);
@@ -118,14 +210,23 @@ function sparkle() {
   }
 }
 
-/* ⏱ タイマー */
+/* 更新 */
 function update() {
-  const now = Date.now();
-  const diff = now - startTime + elapsed;
 
-  const h = Math.floor(diff / 3600000);
-  const m = Math.floor(diff / 60000) % 60;
-  const s = Math.floor(diff / 1000) % 60;
+  let diff = elapsed;
+
+  if (running) {
+    diff += Date.now() - startTime;
+  }
+
+  const h =
+    Math.floor(diff / 3600000);
+
+  const m =
+    Math.floor(diff / 60000) % 60;
+
+  const s =
+    Math.floor(diff / 1000) % 60;
 
   document.getElementById("time").textContent =
     String(h).padStart(2, '0') + ":" +
@@ -133,23 +234,66 @@ function update() {
     String(s).padStart(2, '0');
 }
 
-/* ▶ ボタン */
+/* START / STOP */
 btn.addEventListener("click", () => {
+
   playBeep();
   sparkle();
 
   if (!running) {
+
     startTime = Date.now();
-    timer = setInterval(update, 1000);
+
     running = true;
+
+    timer = setInterval(update, 1000);
+
     btn.textContent = "STOP";
+
   } else {
+
     clearInterval(timer);
+
     elapsed += Date.now() - startTime;
+
     running = false;
+
     btn.textContent = "START";
   }
+
+  saveState();
 });
+
+/* RESET */
+resetBtn.addEventListener("click", () => {
+
+  clearInterval(timer);
+
+  startTime = 0;
+  elapsed = 0;
+  running = false;
+
+  localStorage.removeItem("timer_running");
+  localStorage.removeItem("timer_startTime");
+  localStorage.removeItem("timer_elapsed");
+
+  document.getElementById("time").textContent =
+    "00:00:00";
+
+  btn.textContent = "START";
+
+  sparkle();
+});
+
+/* 起動時 */
+loadState();
+
+/* 定期保存 */
+setInterval(() => {
+  if (running) {
+    saveState();
+  }
+}, 1000);
 </script>
 
 </body>
