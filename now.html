@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Now Working</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff8fb;
+  font-family: sans-serif;
+}
+
+#task {
+  font-size: 72px;
+  font-weight: bold;
+  color: #ff4d8d;
+  text-align: center;
+  padding: 20px 40px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
+</head>
+<body>
+
+<div id="task">読み込み中...</div>
+
+<script>
+async function fetchTask() {
+  try {
+    const res = await fetch("/api/task");
+    const data = await res.json();
+    document.getElementById("task").textContent = data.title;
+  } catch (e) {
+    document.getElementById("task").textContent = "エラー";
+  }
+}
+
+fetchTask();
+setInterval(fetchTask, 10000); // 10秒更新
+</script>
+
+</body>
+</html>
