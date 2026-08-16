@@ -10,9 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>
-Podcast Player
-</title>
+<title>Podcast Player</title>
 
 
 <style>
@@ -81,32 +79,6 @@ body {
   font-size: 14px;
 
   font-weight: 600;
-
-}
-
-
-/* =========================================================
-   タイトル
-========================================================= */
-
-.title {
-
-  font-size: 18px;
-
-  font-weight: 700;
-
-  margin-bottom: 4px;
-
-}
-
-
-.subtitle {
-
-  font-size: 12px;
-
-  color: #888888;
-
-  margin-bottom: 16px;
 
 }
 
@@ -544,13 +516,6 @@ audio {
 
   }
 
-
-  .title {
-
-    font-size: 16px;
-
-  }
-
 }
 
 </style>
@@ -586,27 +551,6 @@ audio {
     </option>
 
   </select>
-
-
-  <!-- =====================================================
-       タイトル
-  ====================================================== -->
-
-  <div
-    id="title"
-    class="title"
-  >
-
-    カナメストーンのカナメちゃん村
-
-  </div>
-
-
-  <div class="subtitle">
-
-    古いエピソード順
-
-  </div>
 
 
   <!-- =====================================================
@@ -874,12 +818,6 @@ let currentPodcast = "kaname";
 const podcastSelect =
   document.getElementById(
     "podcastSelect"
-  );
-
-
-const title =
-  document.getElementById(
-    "title"
   );
 
 
@@ -1215,10 +1153,6 @@ function sortOldestFirst(
 
 function createSeasonList() {
 
-
-  /*
-   * 以前のシーズンを削除
-   */
 
   seasonSelect.innerHTML =
 
@@ -2014,15 +1948,13 @@ podcastSelect.addEventListener(
       podcastSelect.value;
 
 
-    /*
-     * 表示タイトル変更
-     */
+    localStorage.setItem(
 
-    title.textContent =
+      "selectedPodcast",
 
-      PODCASTS[
-        currentPodcast
-      ].name;
+      currentPodcast
+
+    );
 
 
     /*
@@ -2048,6 +1980,19 @@ podcastSelect.addEventListener(
 
 
     /*
+     * シーズンを初期化
+     */
+
+    seasonSelect.innerHTML =
+
+      '<option value="all">' +
+
+      'すべてのシーズン' +
+
+      '</option>';
+
+
+    /*
      * ローディング表示
      */
 
@@ -2067,6 +2012,10 @@ podcastSelect.addEventListener(
     pageInfo.textContent =
       "";
 
+
+    /*
+     * プレイヤー停止
+     */
 
     audio.pause();
 
@@ -2326,39 +2275,6 @@ async function init() {
 
 
   }
-
-
-  /*
-   * タイトル
-   */
-
-  title.textContent =
-
-    PODCASTS[
-      currentPodcast
-    ].name;
-
-
-  /*
-   * Podcast選択を保存
-   */
-
-  podcastSelect.addEventListener(
-    "change",
-    function() {
-
-
-      localStorage.setItem(
-
-        "selectedPodcast",
-
-        currentPodcast
-
-      );
-
-
-    }
-  );
 
 
   /*
