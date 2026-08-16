@@ -1,10 +1,31 @@
 const RSS_URL = "https://anchor.fm/s/2295ff0c/podcast/rss";
 
 export default async function handler(req, res) {
+  // CORSを許可
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "*"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, OPTIONS"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+  );
+
+  // OPTIONSリクエストへの対応
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   try {
     const response = await fetch(RSS_URL, {
       headers: {
-        "User-Agent": "KanamePodcastRSS/1.0"
+        "User-Agent": "Mozilla/5.0"
       }
     });
 
@@ -26,13 +47,13 @@ export default async function handler(req, res) {
       "s-maxage=300, stale-while-revalidate=600"
     );
 
-    res.status(200).send(rss);
+    return res.status(200).send(rss);
 
   } catch (error) {
 
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       error: "RSSを取得できませんでした",
       message: error.message
     });
