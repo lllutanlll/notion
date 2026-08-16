@@ -11,7 +11,7 @@
 >
 
 <title>
-カナメストーンのカナメちゃん村
+Podcast Player
 </title>
 
 
@@ -58,6 +58,37 @@ body {
 }
 
 
+/* =========================================================
+   Podcast選択
+========================================================= */
+
+.podcast-select {
+
+  width: 100%;
+
+  padding: 10px 12px;
+
+  margin-bottom: 12px;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 6px;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+}
+
+
+/* =========================================================
+   タイトル
+========================================================= */
+
 .title {
 
   font-size: 18px;
@@ -81,7 +112,7 @@ body {
 
 
 /* =========================================================
-   プレイヤー + スキップボタン
+   プレイヤー
 ========================================================= */
 
 .player-controls {
@@ -99,8 +130,6 @@ body {
 }
 
 
-/* 標準オーディオプレイヤー */
-
 audio {
 
   flex: 1;
@@ -115,7 +144,7 @@ audio {
 
 
 /* =========================================================
-   10秒スキップボタン
+   10秒スキップ
 ========================================================= */
 
 .skip-controls {
@@ -536,10 +565,37 @@ audio {
 
 
   <!-- =====================================================
+       Podcast選択
+  ====================================================== -->
+
+  <select
+    id="podcastSelect"
+    class="podcast-select"
+  >
+
+    <option value="kaname">
+      カナメストーンのカナメちゃん村
+    </option>
+
+    <option value="city">
+      カナメストーンのカナメちゃんシティ
+    </option>
+
+    <option value="shinku">
+      真空ジェシカのラジオ父ちゃん
+    </option>
+
+  </select>
+
+
+  <!-- =====================================================
        タイトル
   ====================================================== -->
 
-  <div class="title">
+  <div
+    id="title"
+    class="title"
+  >
 
     カナメストーンのカナメちゃん村
 
@@ -751,12 +807,45 @@ audio {
 ========================================================= */
 
 
-const RSS_URL =
+const RSS_ENDPOINT =
   "/api/rss";
 
 
 const PER_PAGE =
   20;
+
+
+/* =========================================================
+   Podcast情報
+========================================================= */
+
+
+const PODCASTS = {
+
+  kaname: {
+
+    name:
+      "カナメストーンのカナメちゃん村"
+
+  },
+
+
+  city: {
+
+    name:
+      "カナメストーンのカナメちゃんシティ"
+
+  },
+
+
+  shinku: {
+
+    name:
+      "真空ジェシカのラジオ父ちゃん"
+
+  }
+
+};
 
 
 /* =========================================================
@@ -774,10 +863,24 @@ let currentPage = 1;
 
 let selectedSeason = "all";
 
+let currentPodcast = "kaname";
+
 
 /* =========================================================
    DOM
 ========================================================= */
+
+
+const podcastSelect =
+  document.getElementById(
+    "podcastSelect"
+  );
+
+
+const title =
+  document.getElementById(
+    "title"
+  );
 
 
 const audio =
@@ -859,6 +962,21 @@ const pageInfo =
 
 
 /* =========================================================
+   Podcastごとの保存キー
+========================================================= */
+
+
+function getStorageKey() {
+
+  return (
+    "podcastPlayer_" +
+    currentPodcast
+  );
+
+}
+
+
+/* =========================================================
    RSS取得
 ========================================================= */
 
@@ -868,10 +986,19 @@ async function fetchRSS() {
 
   const response =
     await fetch(
-      RSS_URL,
+
+      RSS_ENDPOINT +
+
+      "?podcast=" +
+
+      encodeURIComponent(
+        currentPodcast
+      ),
+
       {
         cache: "no-store"
       }
+
     );
 
 
@@ -925,13 +1052,13 @@ function parseRSS(
       function(item) {
 
 
-        const title =
+        const titleElement =
           item.querySelector(
             "title"
           );
 
 
-        const pubDate =
+        const pubDateElement =
           item.querySelector(
             "pubDate"
           );
@@ -982,18 +1109,18 @@ function parseRSS(
 
           title:
 
-            title
+            titleElement
 
-              ? title.textContent.trim()
+              ? titleElement.textContent.trim()
 
               : "タイトル不明",
 
 
           pubDate:
 
-            pubDate
+            pubDateElement
 
-              ? pubDate.textContent.trim()
+              ? pubDateElement.textContent.trim()
 
               : "",
 
@@ -1058,18 +1185,20 @@ function sortOldestFirst(
     function(a, b) {
 
 
-      return (
-
+      const dateA =
         new Date(
           a.pubDate
-        ).getTime()
+        ).getTime();
 
-        -
 
+      const dateB =
         new Date(
           b.pubDate
-        ).getTime()
+        ).getTime();
 
+
+      return (
+        dateA - dateB
       );
 
 
@@ -1080,11 +1209,24 @@ function sortOldestFirst(
 
 
 /* =========================================================
-   シーズン一覧
+   シーズン一覧作成
 ========================================================= */
 
 
 function createSeasonList() {
+
+
+  /*
+   * 以前のシーズンを削除
+   */
+
+  seasonSelect.innerHTML =
+
+    '<option value="all">' +
+
+    'すべてのシーズン' +
+
+    '</option>';
 
 
   const seasons = [];
@@ -1366,9 +1508,13 @@ function playEpisode(
     episode.title;
 
 
+  /*
+   * Podcastごとに最後のエピソードを保存
+   */
+
   localStorage.setItem(
 
-    "kanamePodcastIndex",
+    getStorageKey(),
 
     String(index)
 
@@ -1538,6 +1684,10 @@ function renderEpisodes() {
       '</div>';
 
 
+    pageInfo.textContent =
+      "";
+
+
     return;
 
   }
@@ -1598,18 +1748,18 @@ function renderEpisodes() {
         );
 
 
-      const title =
+      const episodeTitle =
 
         document.createElement(
           "div"
         );
 
 
-      title.className =
+      episodeTitle.className =
         "episode-title";
 
 
-      title.textContent =
+      episodeTitle.textContent =
         episode.title;
 
 
@@ -1637,7 +1787,7 @@ function renderEpisodes() {
 
 
       div.appendChild(
-        title
+        episodeTitle
       );
 
 
@@ -1747,7 +1897,7 @@ nextButton.addEventListener(
 
 
 /* =========================================================
-   エピソード終了 → 次の回
+   再生終了 → 次の回
 ========================================================= */
 
 
@@ -1851,11 +2001,104 @@ nextPage.addEventListener(
 
 
 /* =========================================================
-   初期化
+   Podcast切り替え
 ========================================================= */
 
 
-async function init() {
+podcastSelect.addEventListener(
+  "change",
+  async function() {
+
+
+    currentPodcast =
+      podcastSelect.value;
+
+
+    /*
+     * 表示タイトル変更
+     */
+
+    title.textContent =
+
+      PODCASTS[
+        currentPodcast
+      ].name;
+
+
+    /*
+     * 状態リセット
+     */
+
+    episodes = [];
+
+    filteredEpisodes = [];
+
+    currentIndex = -1;
+
+    currentPage = 1;
+
+    selectedSeason = "all";
+
+
+    /*
+     * 検索欄をクリア
+     */
+
+    search.value = "";
+
+
+    /*
+     * ローディング表示
+     */
+
+    episodesElement.innerHTML =
+
+      '<div class="loading">' +
+
+      'エピソードを読み込んでいます……' +
+
+      '</div>';
+
+
+    episodeCount.textContent =
+      "";
+
+
+    pageInfo.textContent =
+      "";
+
+
+    audio.pause();
+
+
+    audio.removeAttribute(
+      "src"
+    );
+
+
+    audio.load();
+
+
+    nowPlaying.textContent =
+      "読み込み中……";
+
+
+    /*
+     * Podcast読み込み
+     */
+
+    await loadPodcast();
+
+  }
+);
+
+
+/* =========================================================
+   Podcast読み込み
+========================================================= */
+
+
+async function loadPodcast() {
 
 
   try {
@@ -1877,12 +2120,16 @@ async function init() {
       );
 
 
-    /* シーズン一覧 */
+    /*
+     * シーズン作成
+     */
 
     createSeasonList();
 
 
-    /* 全エピソード */
+    /*
+     * 全エピソード
+     */
 
     filteredEpisodes =
       episodes.slice();
@@ -1895,14 +2142,16 @@ async function init() {
       " エピソード";
 
 
-    /* 前回のエピソード */
+    /*
+     * 前回再生したエピソード
+     */
 
     const savedIndex =
 
       parseInt(
 
         localStorage.getItem(
-          "kanamePodcastIndex"
+          getStorageKey()
         ),
 
         10
@@ -1960,6 +2209,49 @@ async function init() {
         ) + 1;
 
 
+    } else {
+
+
+      /*
+       * まだ聴いていない場合
+       * 最初のエピソードを表示
+       */
+
+      if (
+        episodes.length > 0
+      ) {
+
+
+        const episode =
+          episodes[0];
+
+
+        currentIndex = 0;
+
+
+        audio.src =
+          episode.audioURL;
+
+
+        nowPlaying.textContent =
+
+          getEpisodeLabel(
+            episode,
+            0
+          )
+
+          +
+
+          "　"
+
+          +
+
+          episode.title;
+
+
+      }
+
+
     }
 
 
@@ -1993,6 +2285,87 @@ async function init() {
 
 
   }
+
+}
+
+
+/* =========================================================
+   初期化
+========================================================= */
+
+
+async function init() {
+
+
+  /*
+   * 保存されているPodcastを復元
+   */
+
+  const savedPodcast =
+
+    localStorage.getItem(
+      "selectedPodcast"
+    );
+
+
+  if (
+
+    savedPodcast &&
+
+    PODCASTS[savedPodcast]
+
+  ) {
+
+
+    currentPodcast =
+      savedPodcast;
+
+
+    podcastSelect.value =
+      savedPodcast;
+
+
+  }
+
+
+  /*
+   * タイトル
+   */
+
+  title.textContent =
+
+    PODCASTS[
+      currentPodcast
+    ].name;
+
+
+  /*
+   * Podcast選択を保存
+   */
+
+  podcastSelect.addEventListener(
+    "change",
+    function() {
+
+
+      localStorage.setItem(
+
+        "selectedPodcast",
+
+        currentPodcast
+
+      );
+
+
+    }
+  );
+
+
+  /*
+   * 初回読み込み
+   */
+
+  await loadPodcast();
 
 }
 
