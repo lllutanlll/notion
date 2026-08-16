@@ -10,7 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>Podcast</title>
+<title>Podcast Player</title>
 
 
 <style>
@@ -57,59 +57,46 @@ body {
 
   width: 100%;
 
-  max-width: 560px;
+  max-width: 900px;
 
   margin: 0 auto;
 
-  padding: 10px 20px 20px;
+  padding: 10px 18px 14px;
 
 }
 
 
 /* =========================================================
-   Podcast選択
+   2列
 ========================================================= */
 
-.podcast-select {
+.player-layout {
 
-  display: block;
+  display: grid;
 
-  width: 100%;
+  grid-template-columns:
+    minmax(280px, 0.9fr)
+    minmax(320px, 1.1fr);
 
-  max-width: 340px;
+  gap: 36px;
 
-  margin: 0 auto 28px;
-
-  padding: 6px 25px 6px 4px;
-
-  border: none;
-
-  border-bottom: 1px solid #222;
-
-  border-radius: 0;
-
-  background: #fff;
-
-  color: #222;
-
-  font-size: 13px;
-
-  font-weight: 400;
-
-  text-align: center;
-
-  text-align-last: center;
-
-  outline: none;
-
-  cursor: pointer;
+  align-items: start;
 
 }
 
 
 /* =========================================================
-   現在再生中
+   左：プレイヤー
 ========================================================= */
+
+.player-main {
+
+  min-width: 0;
+
+  padding-top: 20px;
+
+}
+
 
 .now-playing {
 
@@ -299,7 +286,7 @@ body {
 
   align-items: center;
 
-  margin-bottom: 24px;
+  margin-bottom: 0;
 
 }
 
@@ -338,6 +325,56 @@ body {
 
 
 /* =========================================================
+   右：プレイリスト
+========================================================= */
+
+.playlist {
+
+  min-width: 0;
+
+}
+
+
+/* =========================================================
+   Podcast選択
+========================================================= */
+
+.podcast-select {
+
+  display: block;
+
+  width: 100%;
+
+  margin: 0 0 18px;
+
+  padding: 6px 25px 6px 4px;
+
+  border: none;
+
+  border-bottom: 1px solid #222;
+
+  border-radius: 0;
+
+  background: #fff;
+
+  color: #222;
+
+  font-size: 13px;
+
+  font-weight: 400;
+
+  text-align: center;
+
+  text-align-last: center;
+
+  outline: none;
+
+  cursor: pointer;
+
+}
+
+
+/* =========================================================
    フィルター
 ========================================================= */
 
@@ -347,7 +384,7 @@ body {
 
   gap: 8px;
 
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 
 }
 
@@ -417,14 +454,46 @@ body {
 
   border-top: 1px solid #eee;
 
+  max-height: 430px;
+
+  overflow-y: auto;
+
 }
 
+
+/* スクロールバー */
+
+.episodes::-webkit-scrollbar {
+
+  width: 3px;
+
+}
+
+
+.episodes::-webkit-scrollbar-track {
+
+  background: transparent;
+
+}
+
+
+.episodes::-webkit-scrollbar-thumb {
+
+  background: #ccc;
+
+}
+
+
+/* =========================================================
+   エピソード
+========================================================= */
 
 .episode {
 
   display: grid;
 
-  grid-template-columns: 1fr auto;
+  grid-template-columns:
+    1fr auto;
 
   align-items: center;
 
@@ -436,7 +505,8 @@ body {
 
   cursor: pointer;
 
-  transition: opacity 0.15s;
+  transition:
+    opacity 0.15s;
 
 }
 
@@ -489,7 +559,7 @@ body {
 
   gap: 20px;
 
-  margin-top: 15px;
+  margin-top: 12px;
 
 }
 
@@ -576,7 +646,7 @@ body {
    モバイル
 ========================================================= */
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
 
   .player {
 
@@ -588,9 +658,19 @@ body {
   }
 
 
-  .podcast-select {
+  .player-layout {
 
-    margin-bottom: 24px;
+    grid-template-columns:
+      1fr;
+
+    gap: 28px;
+
+  }
+
+
+  .player-main {
+
+    padding-top: 0;
 
   }
 
@@ -618,18 +698,32 @@ body {
   }
 
 
-  .episode {
+  .episodes {
 
-    grid-template-columns: 1fr;
+    max-height: none;
 
-    padding: 9px 2px;
+  }
+
+}
+
+
+/* =========================================================
+   非常に狭い画面
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .filters {
+
+    flex-direction: column;
 
   }
 
 
-  .episode-date {
+  .season-select,
+  .search {
 
-    margin-top: -3px;
+    width: 100%;
 
   }
 
@@ -646,252 +740,255 @@ body {
 <div class="player">
 
 
-  <!-- =====================================================
-       Podcast選択
-  ====================================================== -->
-
-  <select
-    id="podcastSelect"
-    class="podcast-select"
-  >
-
-    <option value="kaname">
-      カナメストーンのカナメちゃん村
-    </option>
-
-    <option value="city">
-      カナメストーンのカナメちゃんシティ
-    </option>
-
-    <option value="shinku">
-      真空ジェシカのラジオ父ちゃん
-    </option>
-
-  </select>
+  <div class="player-layout">
 
 
-  <!-- =====================================================
-       現在再生中
-  ====================================================== -->
+    <!-- =====================================================
+         左：プレイヤー
+    ====================================================== -->
 
-  <div class="now-playing">
+    <section class="player-main">
 
-    <div
-      id="nowPlaying"
-      class="now-playing-title"
-    >
-      読み込み中……
-    </div>
+
+      <!-- 現在再生中 -->
+
+      <div class="now-playing">
+
+        <div
+          id="nowPlaying"
+          class="now-playing-title"
+        >
+          読み込み中……
+        </div>
+
+      </div>
+
+
+      <!-- 時間 -->
+
+      <div class="time-display">
+
+        <span id="currentTime">
+          0:00
+        </span>
+
+        <span id="duration">
+          0:00
+        </span>
+
+      </div>
+
+
+      <!-- プログレスバー -->
+
+      <div
+        id="progressContainer"
+        class="progress-container"
+      >
+
+        <div
+          id="progressBar"
+          class="progress-bar"
+        ></div>
+
+      </div>
+
+
+      <!-- 音声 -->
+
+      <audio
+        id="audio"
+        preload="metadata"
+      ></audio>
+
+
+      <!-- メイン操作 -->
+
+      <div class="main-controls">
+
+
+        <button
+          id="back10"
+          class="control-button skip-button"
+          title="10秒戻る"
+        >
+
+          ↶
+
+          <span>
+            10
+          </span>
+
+        </button>
+
+
+        <button
+          id="playButton"
+          class="control-button play-button"
+          title="再生"
+        >
+
+          ▶
+
+        </button>
+
+
+        <button
+          id="forward10"
+          class="control-button skip-button"
+          title="10秒進む"
+        >
+
+          <span>
+            10
+          </span>
+
+          ↷
+
+        </button>
+
+
+      </div>
+
+
+      <!-- 前後の回 -->
+
+      <div class="episode-navigation">
+
+
+        <button
+          id="prevButton"
+          class="nav-button"
+        >
+
+          ← 前の回
+
+        </button>
+
+
+        <button
+          id="nextButton"
+          class="nav-button"
+        >
+
+          次の回 →
+
+        </button>
+
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         右：プレイリスト
+    ====================================================== -->
+
+    <section class="playlist">
+
+
+      <!-- Podcast選択 -->
+
+      <select
+        id="podcastSelect"
+        class="podcast-select"
+      >
+
+        <option value="kaname">
+          カナメストーンのカナメちゃん村
+        </option>
+
+        <option value="city">
+          カナメストーンのカナメちゃんシティ
+        </option>
+
+        <option value="shinku">
+          真空ジェシカのラジオ父ちゃん
+        </option>
+
+      </select>
+
+
+      <!-- フィルター -->
+
+      <div class="filters">
+
+
+        <select
+          id="seasonSelect"
+          class="season-select"
+        >
+
+          <option value="all">
+            すべてのシーズン
+          </option>
+
+        </select>
+
+
+        <input
+          id="search"
+          class="search"
+          type="search"
+          placeholder="エピソードを検索"
+        >
+
+
+      </div>
+
+
+      <!-- エピソード数 -->
+
+      <div
+        id="episodeCount"
+        class="episode-count"
+      ></div>
+
+
+      <!-- エピソード一覧 -->
+
+      <div
+        id="episodes"
+        class="episodes"
+      >
+
+        <div class="loading">
+          エピソードを読み込んでいます……
+        </div>
+
+      </div>
+
+
+      <!-- ページ -->
+
+      <div class="pagination">
+
+
+        <button id="prevPage">
+          ←
+        </button>
+
+
+        <span
+          id="pageInfo"
+          class="page-info"
+        ></span>
+
+
+        <button id="nextPage">
+          →
+        </button>
+
+
+      </div>
+
+
+    </section>
+
 
   </div>
-
-
-  <!-- =====================================================
-       時間
-  ====================================================== -->
-
-  <div class="time-display">
-
-    <span id="currentTime">
-      0:00
-    </span>
-
-    <span id="duration">
-      0:00
-    </span>
-
-  </div>
-
-
-  <!-- =====================================================
-       プログレスバー
-  ====================================================== -->
-
-  <div
-    id="progressContainer"
-    class="progress-container"
-  >
-
-    <div
-      id="progressBar"
-      class="progress-bar"
-    ></div>
-
-  </div>
-
-
-  <!-- =====================================================
-       音声
-  ====================================================== -->
-
-  <audio
-    id="audio"
-    preload="metadata"
-  ></audio>
-
-
-  <!-- =====================================================
-       メイン操作
-  ====================================================== -->
-
-  <div class="main-controls">
-
-
-    <button
-      id="back10"
-      class="control-button skip-button"
-      title="10秒戻る"
-    >
-
-      ↶
-
-      <span>
-        10
-      </span>
-
-    </button>
-
-
-    <button
-      id="playButton"
-      class="control-button play-button"
-      title="再生"
-    >
-
-      ▶
-
-    </button>
-
-
-    <button
-      id="forward10"
-      class="control-button skip-button"
-      title="10秒進む"
-    >
-
-      <span>
-        10
-      </span>
-
-      ↷
-
-    </button>
-
-
-  </div>
-
-
-  <!-- =====================================================
-       前後
-  ====================================================== -->
-
-  <div class="episode-navigation">
-
-
-    <button
-      id="prevButton"
-      class="nav-button"
-    >
-
-      ← 前の回
-
-    </button>
-
-
-    <button
-      id="nextButton"
-      class="nav-button"
-    >
-
-      次の回 →
-
-    </button>
-
-
-  </div>
-
-
-  <!-- =====================================================
-       フィルター
-  ====================================================== -->
-
-  <div class="filters">
-
-
-    <select
-      id="seasonSelect"
-      class="season-select"
-    >
-
-      <option value="all">
-        すべてのシーズン
-      </option>
-
-    </select>
-
-
-    <input
-      id="search"
-      class="search"
-      type="search"
-      placeholder="エピソードを検索"
-    >
-
-
-  </div>
-
-
-  <!-- =====================================================
-       エピソード数
-  ====================================================== -->
-
-  <div
-    id="episodeCount"
-    class="episode-count"
-  ></div>
-
-
-  <!-- =====================================================
-       エピソード
-  ====================================================== -->
-
-  <div
-    id="episodes"
-    class="episodes"
-  >
-
-    <div class="loading">
-      エピソードを読み込んでいます……
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       ページ
-  ====================================================== -->
-
-  <div class="pagination">
-
-
-    <button id="prevPage">
-      ←
-    </button>
-
-
-    <span
-      id="pageInfo"
-      class="page-info"
-    ></span>
-
-
-    <button id="nextPage">
-      →
-    </button>
-
-
-  </div>
-
 
 </div>
 
