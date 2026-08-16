@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -8,7 +10,9 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>カナメストーンのカナメちゃん村</title>
+<title>
+カナメストーンのカナメちゃん村
+</title>
 
 <style>
 
@@ -17,7 +21,9 @@
 }
 
 body {
+
   margin: 0;
+
   padding: 20px;
 
   font-family:
@@ -29,64 +35,153 @@ body {
     sans-serif;
 
   background: #ffffff;
+
   color: #222222;
+
 }
 
 .player {
+
   width: 100%;
+
   max-width: 720px;
+
   margin: 0 auto;
+
 }
 
 .title {
+
   font-size: 18px;
+
   font-weight: 700;
+
   margin-bottom: 4px;
+
 }
 
 .subtitle {
+
   font-size: 12px;
+
   color: #888888;
+
   margin-bottom: 16px;
+
 }
+
+
+/* =========================
+   オーディオ
+========================= */
 
 audio {
+
   width: 100%;
-  margin-bottom: 14px;
+
+  margin-bottom: 10px;
+
 }
 
+
+/* =========================
+   10秒操作
+========================= */
+
+.skip-controls {
+
+  display: flex;
+
+  gap: 8px;
+
+  margin-bottom: 12px;
+
+}
+
+.skip-button {
+
+  flex: 1;
+
+  padding: 9px 10px;
+
+  border: 1px solid #dddddd;
+
+  background: #ffffff;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+}
+
+.skip-button:hover {
+
+  background: #f5f5f5;
+
+}
+
+
+/* =========================
+   現在再生中
+========================= */
+
 .now-playing {
+
   padding: 12px;
+
   margin-bottom: 12px;
 
   background: #f5f5f5;
+
   border-radius: 8px;
+
 }
 
 .now-playing-label {
+
   margin-bottom: 4px;
 
   font-size: 11px;
+
   color: #888888;
+
 }
 
 .now-playing-title {
+
   font-size: 14px;
+
   font-weight: 600;
+
   line-height: 1.5;
+
 }
 
+
+/* =========================
+   前後のエピソード
+========================= */
+
 .controls {
+
   display: flex;
+
   gap: 8px;
 
   margin-bottom: 16px;
+
 }
 
-button {
+.controls button {
+
+  flex: 1;
+
   appearance: none;
 
   border: 1px solid #dddddd;
+
   background: #ffffff;
 
   color: #222222;
@@ -98,24 +193,60 @@ button {
   font-size: 13px;
 
   cursor: pointer;
+
 }
 
-button:hover {
+.controls button:hover {
+
   background: #f5f5f5;
+
 }
 
-button:disabled {
+.controls button:disabled {
+
   opacity: 0.4;
+
   cursor: default;
+
 }
 
-.search {
+
+/* =========================
+   シーズン選択
+========================= */
+
+.season-select {
+
   width: 100%;
 
   padding: 9px 11px;
 
-  border:
-    1px solid #dddddd;
+  border: 1px solid #dddddd;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  margin-bottom: 12px;
+
+}
+
+
+/* =========================
+   検索
+========================= */
+
+.search {
+
+  width: 100%;
+
+  padding: 9px 11px;
+
+  border: 1px solid #dddddd;
 
   border-radius: 6px;
 
@@ -124,58 +255,141 @@ button:disabled {
   margin-bottom: 12px;
 
   outline: none;
+
 }
 
+
+/* =========================
+   エピソード数
+========================= */
+
 .episode-count {
+
   font-size: 12px;
+
   color: #888888;
 
   margin-bottom: 8px;
+
 }
 
+
+/* =========================
+   エピソード一覧
+========================= */
+
 .episodes {
+
   border-top:
     1px solid #eeeeee;
+
 }
 
 .episode {
+
   padding: 11px 8px;
 
   border-bottom:
     1px solid #eeeeee;
 
   cursor: pointer;
+
 }
 
 .episode:hover {
+
   background: #f7f7f7;
+
 }
 
 .episode.active {
+
   background: #f0f0f0;
+
 }
 
 .episode-number {
+
   font-size: 11px;
+
   color: #999999;
 
   margin-bottom: 2px;
+
 }
 
 .episode-title {
+
   font-size: 13px;
 
   line-height: 1.5;
+
 }
 
 .episode-date {
+
   font-size: 11px;
+
   color: #999999;
 
   margin-top: 3px;
+
 }
 
+
+/* =========================
+   ページ
+========================= */
+
+.pagination {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 16px;
+
+}
+
+.pagination button {
+
+  border: 1px solid #dddddd;
+
+  background: #ffffff;
+
+  border-radius: 6px;
+
+  padding: 7px 12px;
+
+  cursor: pointer;
+
+}
+
+.pagination button:disabled {
+
+  opacity: 0.4;
+
+}
+
+.page-info {
+
+  font-size: 12px;
+
+  color: #888888;
+
+}
+
+
+/* =========================
+   ロード
+========================= */
+
 .loading {
+
   padding: 20px 0;
 
   text-align: center;
@@ -183,9 +397,16 @@ button:disabled {
   color: #888888;
 
   font-size: 13px;
+
 }
 
+
+/* =========================
+   エラー
+========================= */
+
 .error {
+
   padding: 14px;
 
   background: #fff3f3;
@@ -197,40 +418,37 @@ button:disabled {
   font-size: 13px;
 
   line-height: 1.6;
-}
 
-.pagination {
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  gap: 12px;
-
-  margin-top: 16px;
-}
-
-.page-info {
-  font-size: 12px;
-
-  color: #888888;
 }
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="player">
 
+
   <div class="title">
+
     カナメストーンのカナメちゃん村
+
   </div>
 
+
   <div class="subtitle">
+
     古いエピソード順
+
   </div>
+
+
+  <!-- ======================
+       オーディオ
+  ======================= -->
 
   <audio
     id="audio"
@@ -238,32 +456,103 @@ button:disabled {
     preload="metadata"
   ></audio>
 
+
+  <!-- ======================
+       10秒操作
+  ======================= -->
+
+  <div class="skip-controls">
+
+    <button
+      id="back10"
+      class="skip-button"
+    >
+
+      ↶ 10秒戻る
+
+    </button>
+
+
+    <button
+      id="forward10"
+      class="skip-button"
+    >
+
+      10秒進む ↷
+
+    </button>
+
+  </div>
+
+
+  <!-- ======================
+       現在再生中
+  ======================= -->
+
   <div class="now-playing">
 
     <div class="now-playing-label">
+
       NOW PLAYING
+
     </div>
+
 
     <div
       id="nowPlaying"
       class="now-playing-title"
     >
+
       読み込み中……
+
     </div>
 
   </div>
 
+
+  <!-- ======================
+       前後のエピソード
+  ======================= -->
+
   <div class="controls">
 
     <button id="prevButton">
+
       ← 前の回
+
     </button>
 
+
     <button id="nextButton">
+
       次の回 →
+
     </button>
 
   </div>
+
+
+  <!-- ======================
+       シーズン
+  ======================= -->
+
+  <select
+    id="seasonSelect"
+    class="season-select"
+  >
+
+    <option value="all">
+
+      すべてのシーズン
+
+    </option>
+
+  </select>
+
+
+  <!-- ======================
+       検索
+  ======================= -->
 
   <input
     id="search"
@@ -272,10 +561,16 @@ button:disabled {
     placeholder="エピソードを検索"
   >
 
+
   <div
     id="episodeCount"
     class="episode-count"
   ></div>
+
+
+  <!-- ======================
+       エピソード
+  ======================= -->
 
   <div
     id="episodes"
@@ -283,37 +578,69 @@ button:disabled {
   >
 
     <div class="loading">
+
       エピソードを読み込んでいます……
+
     </div>
 
   </div>
 
+
+  <!-- ======================
+       ページ
+  ======================= -->
+
   <div class="pagination">
 
     <button id="prevPage">
+
       ←
+
     </button>
+
 
     <span
       id="pageInfo"
       class="page-info"
     ></span>
 
+
     <button id="nextPage">
+
       →
+
     </button>
 
   </div>
 
+
 </div>
+
 
 
 <script>
 
+
+/*
+============================================================
+設定
+============================================================
+*/
+
+
 const RSS_URL =
   "/api/rss";
 
+
 const PER_PAGE = 20;
+
+
+/*
+============================================================
+状態
+============================================================
+*/
+
 
 let episodes = [];
 
@@ -323,51 +650,87 @@ let currentIndex = -1;
 
 let currentPage = 1;
 
+let selectedSeason = "all";
+
+
+/*
+============================================================
+DOM
+============================================================
+*/
+
 
 const audio =
   document.getElementById(
     "audio"
   );
 
+
 const nowPlaying =
   document.getElementById(
     "nowPlaying"
   );
+
 
 const episodesElement =
   document.getElementById(
     "episodes"
   );
 
+
 const episodeCount =
   document.getElementById(
     "episodeCount"
   );
+
 
 const search =
   document.getElementById(
     "search"
   );
 
+
 const prevButton =
   document.getElementById(
     "prevButton"
   );
+
 
 const nextButton =
   document.getElementById(
     "nextButton"
   );
 
+
+const back10 =
+  document.getElementById(
+    "back10"
+  );
+
+
+const forward10 =
+  document.getElementById(
+    "forward10"
+  );
+
+
+const seasonSelect =
+  document.getElementById(
+    "seasonSelect"
+  );
+
+
 const prevPage =
   document.getElementById(
     "prevPage"
   );
 
+
 const nextPage =
   document.getElementById(
     "nextPage"
   );
+
 
 const pageInfo =
   document.getElementById(
@@ -376,10 +739,14 @@ const pageInfo =
 
 
 /*
- * RSS取得
- */
+============================================================
+RSS取得
+============================================================
+*/
+
 
 async function fetchRSS() {
+
 
   const response =
     await fetch(
@@ -388,6 +755,7 @@ async function fetchRSS() {
         cache: "no-store"
       }
     );
+
 
   if (!response.ok) {
 
@@ -398,27 +766,34 @@ async function fetchRSS() {
 
   }
 
+
   return await response.text();
 
 }
 
 
 /*
- * RSS解析
- */
+============================================================
+RSS解析
+============================================================
+*/
+
 
 function parseRSS(
   xmlText
 ) {
 
+
   const parser =
     new DOMParser();
+
 
   const xml =
     parser.parseFromString(
       xmlText,
       "application/xml"
     );
+
 
   const items =
     Array.from(
@@ -427,24 +802,34 @@ function parseRSS(
       )
     );
 
+
   return items
+
     .map(
       function(item) {
+
 
         const title =
           item.querySelector(
             "title"
           );
 
+
         const pubDate =
           item.querySelector(
             "pubDate"
           );
 
+
         const enclosure =
           item.querySelector(
             "enclosure"
           );
+
+
+        /*
+         * iTunes episode
+         */
 
         const episodeElement =
           Array.from(
@@ -460,34 +845,82 @@ function parseRSS(
             }
           );
 
+
+        /*
+         * iTunes season
+         */
+
+        const seasonElement =
+          Array.from(
+            item.children
+          ).find(
+            function(el) {
+
+              return (
+                el.localName ===
+                "season"
+              );
+
+            }
+          );
+
+
         return {
 
+
           title:
+
             title
+
               ? title.textContent.trim()
+
               : "タイトル不明",
 
+
           pubDate:
+
             pubDate
+
               ? pubDate.textContent.trim()
+
               : "",
 
+
           audioURL:
+
             enclosure
+
               ? enclosure.getAttribute(
                   "url"
                 )
+
               : "",
 
+
           episode:
+
             episodeElement
+
               ? episodeElement.textContent.trim()
+
+              : "",
+
+
+          season:
+
+            seasonElement
+
+              ? seasonElement.textContent.trim()
+
               : ""
 
         };
 
+
       }
     )
+
+
     .filter(
       function(item) {
 
@@ -500,25 +933,35 @@ function parseRSS(
 
 
 /*
- * 古い順
- */
+============================================================
+古い順
+============================================================
+*/
+
 
 function sortOldestFirst(
   list
 ) {
 
+
   return list.sort(
     function(a, b) {
 
+
       return (
+
         new Date(
           a.pubDate
         ).getTime()
+
         -
+
         new Date(
           b.pubDate
         ).getTime()
+
       );
+
 
     }
   );
@@ -527,17 +970,99 @@ function sortOldestFirst(
 
 
 /*
- * 日付
- */
+============================================================
+シーズン一覧を作る
+============================================================
+*/
+
+
+function createSeasonList() {
+
+
+  const seasons = [];
+
+
+  episodes.forEach(
+    function(episode) {
+
+
+      if (
+        episode.season &&
+        !seasons.includes(
+          episode.season
+        )
+      ) {
+
+        seasons.push(
+          episode.season
+        );
+
+      }
+
+
+    }
+  );
+
+
+  seasons.sort(
+    function(a, b) {
+
+      return (
+        Number(a) -
+        Number(b)
+      );
+
+    }
+  );
+
+
+  seasons.forEach(
+    function(season) {
+
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        season;
+
+
+      option.textContent =
+        "Season " +
+        season;
+
+
+      seasonSelect.appendChild(
+        option
+      );
+
+
+    }
+  );
+
+}
+
+
+/*
+============================================================
+日付
+============================================================
+*/
+
 
 function formatDate(
   dateString
 ) {
 
+
   const date =
     new Date(
       dateString
     );
+
 
   if (
     isNaN(
@@ -549,12 +1074,17 @@ function formatDate(
 
   }
 
+
   return date.toLocaleDateString(
     "ja-JP",
     {
+
       year: "numeric",
+
       month: "2-digit",
+
       day: "2-digit"
+
     }
   );
 
@@ -562,84 +1092,169 @@ function formatDate(
 
 
 /*
- * エピソード番号
- */
+============================================================
+エピソード番号
+============================================================
+*/
+
 
 function getEpisodeLabel(
   episode,
   index
 ) {
 
-  if (episode.episode) {
+
+  if (
+    episode.episode
+  ) {
 
     return (
+
       "第" +
+
       episode.episode +
+
       "回"
+
     );
 
   }
 
+
   return (
+
     "第" +
+
     (index + 1) +
+
     "回"
+
   );
 
 }
 
 
 /*
- * エピソード再生
- */
+============================================================
+10秒戻る
+============================================================
+*/
+
+
+back10.addEventListener(
+  "click",
+  function() {
+
+
+    audio.currentTime =
+      Math.max(
+        0,
+        audio.currentTime - 10
+      );
+
+
+  }
+);
+
+
+/*
+============================================================
+10秒進む
+============================================================
+*/
+
+
+forward10.addEventListener(
+  "click",
+  function() {
+
+
+    if (
+      audio.duration
+    ) {
+
+      audio.currentTime =
+        Math.min(
+          audio.duration,
+          audio.currentTime + 10
+        );
+
+    }
+
+
+  }
+);
+
+
+/*
+============================================================
+エピソード再生
+============================================================
+*/
+
 
 function playEpisode(
   index
 ) {
 
+
   if (
+
     index < 0 ||
+
     index >= episodes.length
+
   ) {
 
     return;
 
   }
 
+
   const episode =
     episodes[index];
+
 
   currentIndex =
     index;
 
+
   audio.src =
     episode.audioURL;
 
+
   audio.load();
+
 
   audio.play().catch(
     function() {}
   );
 
+
   nowPlaying.textContent =
+
     getEpisodeLabel(
       episode,
       index
     )
+
     +
+
     "　"
+
     +
+
     episode.title;
 
+
   localStorage.setItem(
+
     "kanamePodcastIndex",
+
     String(index)
+
   );
 
-  currentPage =
-    Math.floor(
-      index / PER_PAGE
-    ) + 1;
 
   renderEpisodes();
 
@@ -647,154 +1262,338 @@ function playEpisode(
 
 
 /*
- * 一覧
- */
+============================================================
+一覧のフィルタリング
+============================================================
+*/
+
+
+function applyFilters() {
+
+
+  const keyword =
+    search.value
+      .trim()
+      .toLowerCase();
+
+
+  filteredEpisodes =
+    episodes.filter(
+      function(episode) {
+
+
+        /*
+         * シーズン
+         */
+
+        const seasonOK =
+
+          selectedSeason === "all"
+
+          ||
+
+          episode.season ===
+          selectedSeason;
+
+
+        /*
+         * 検索
+         */
+
+        const searchOK =
+
+          !keyword
+
+          ||
+
+          episode.title
+            .toLowerCase()
+            .includes(
+              keyword
+            );
+
+
+        return (
+          seasonOK &&
+          searchOK
+        );
+
+
+      }
+    );
+
+
+  currentPage = 1;
+
+
+  episodeCount.textContent =
+
+    filteredEpisodes.length +
+
+    " エピソード";
+
+
+  renderEpisodes();
+
+}
+
+
+/*
+============================================================
+シーズン変更
+============================================================
+*/
+
+
+seasonSelect.addEventListener(
+  "change",
+  function() {
+
+
+    selectedSeason =
+      seasonSelect.value;
+
+
+    applyFilters();
+
+
+  }
+);
+
+
+/*
+============================================================
+検索
+============================================================
+*/
+
+
+search.addEventListener(
+  "input",
+  function() {
+
+    applyFilters();
+
+  }
+);
+
+
+/*
+============================================================
+一覧表示
+============================================================
+*/
+
 
 function renderEpisodes() {
 
+
   const start =
+
     (currentPage - 1)
-    * PER_PAGE;
+
+    *
+
+    PER_PAGE;
+
 
   const end =
-    start + PER_PAGE;
+
+    start +
+
+    PER_PAGE;
+
 
   const pageItems =
+
     filteredEpisodes.slice(
       start,
       end
     );
 
+
   episodesElement.innerHTML =
     "";
+
 
   if (
     pageItems.length === 0
   ) {
 
+
     episodesElement.innerHTML =
+
       '<div class="loading">' +
+
       '該当するエピソードがありません' +
+
       '</div>';
+
 
     return;
 
   }
 
+
   pageItems.forEach(
     function(episode) {
 
+
       const realIndex =
+
         episodes.indexOf(
           episode
         );
 
+
       const div =
+
         document.createElement(
           "div"
         );
+
 
       div.className =
+
         "episode"
+
         +
+
         (
+
           realIndex ===
           currentIndex
+
             ? " active"
+
             : ""
+
         );
 
+
       const number =
+
         document.createElement(
           "div"
         );
+
 
       number.className =
         "episode-number";
 
+
       number.textContent =
+
         getEpisodeLabel(
           episode,
           realIndex
         );
 
+
       const title =
+
         document.createElement(
           "div"
         );
+
 
       title.className =
         "episode-title";
 
+
       title.textContent =
         episode.title;
 
+
       const date =
+
         document.createElement(
           "div"
         );
 
+
       date.className =
         "episode-date";
 
+
       date.textContent =
+
         formatDate(
           episode.pubDate
         );
+
 
       div.appendChild(
         number
       );
 
+
       div.appendChild(
         title
       );
+
 
       div.appendChild(
         date
       );
 
+
       div.addEventListener(
         "click",
         function() {
+
 
           playEpisode(
             realIndex
           );
 
+
         }
       );
+
 
       episodesElement.appendChild(
         div
       );
+
 
     }
   );
 
 
   const totalPages =
+
     Math.max(
+
       1,
+
       Math.ceil(
+
         filteredEpisodes.length /
+
         PER_PAGE
+
       )
+
     );
 
 
   pageInfo.textContent =
-    currentPage
-    +
-    " / "
-    +
+
+    currentPage +
+
+    " / " +
+
     totalPages;
 
 
   prevPage.disabled =
+
     currentPage <= 1;
 
+
   nextPage.disabled =
+
     currentPage >=
     totalPages;
 
@@ -802,125 +1601,107 @@ function renderEpisodes() {
 
 
 /*
- * 検索
- */
+============================================================
+前の回
+============================================================
+*/
 
-search.addEventListener(
-  "input",
-  function() {
-
-    const keyword =
-      search.value
-        .trim()
-        .toLowerCase();
-
-    if (!keyword) {
-
-      filteredEpisodes =
-        episodes.slice();
-
-    } else {
-
-      filteredEpisodes =
-        episodes.filter(
-          function(episode) {
-
-            return episode.title
-              .toLowerCase()
-              .includes(
-                keyword
-              );
-
-          }
-        );
-
-    }
-
-    currentPage = 1;
-
-    episodeCount.textContent =
-      filteredEpisodes.length
-      +
-      " エピソード";
-
-    renderEpisodes();
-
-  }
-);
-
-
-/*
- * 前
- */
 
 prevButton.addEventListener(
   "click",
   function() {
 
+
     playEpisode(
       currentIndex - 1
     );
+
 
   }
 );
 
 
 /*
- * 次
- */
+============================================================
+次の回
+============================================================
+*/
+
 
 nextButton.addEventListener(
   "click",
   function() {
 
+
     playEpisode(
       currentIndex + 1
     );
+
 
   }
 );
 
 
 /*
- * 自動再生
- */
+============================================================
+自動再生
+============================================================
+*/
+
 
 audio.addEventListener(
   "ended",
   function() {
 
+
     if (
+
       currentIndex <
+
       episodes.length - 1
+
     ) {
 
+
       playEpisode(
+
         currentIndex + 1
+
       );
 
+
     }
+
 
   }
 );
 
 
 /*
- * ページ
- */
+============================================================
+ページ
+============================================================
+*/
+
 
 prevPage.addEventListener(
   "click",
   function() {
 
+
     if (
       currentPage > 1
     ) {
 
+
       currentPage--;
+
 
       renderEpisodes();
 
+
     }
+
 
   }
 );
@@ -930,101 +1711,157 @@ nextPage.addEventListener(
   "click",
   function() {
 
+
     const totalPages =
+
       Math.ceil(
+
         filteredEpisodes.length /
+
         PER_PAGE
+
       );
 
+
     if (
+
       currentPage <
+
       totalPages
+
     ) {
+
 
       currentPage++;
 
+
       renderEpisodes();
 
+
     }
+
 
   }
 );
 
 
 /*
- * 初期化
- */
+============================================================
+初期化
+============================================================
+*/
+
 
 async function init() {
 
+
   try {
+
 
     const xmlText =
       await fetchRSS();
+
 
     episodes =
       parseRSS(
         xmlText
       );
 
+
     episodes =
       sortOldestFirst(
         episodes
       );
 
+
+    /*
+     * シーズン一覧作成
+     */
+
+    createSeasonList();
+
+
+    /*
+     * 全エピソード
+     */
+
     filteredEpisodes =
       episodes.slice();
 
+
     episodeCount.textContent =
-      episodes.length
-      +
+
+      episodes.length +
+
       " エピソード";
 
 
     /*
-     * 前回の再生位置
+     * 前回のエピソード
      */
 
     const savedIndex =
+
       parseInt(
+
         localStorage.getItem(
           "kanamePodcastIndex"
         ),
+
         10
+
       );
 
 
     if (
+
       !isNaN(savedIndex) &&
+
       savedIndex >= 0 &&
+
       savedIndex < episodes.length
+
     ) {
+
 
       currentIndex =
         savedIndex;
 
+
       const episode =
-        episodes[
-          savedIndex
-        ];
+        episodes[savedIndex];
+
 
       audio.src =
         episode.audioURL;
 
+
       nowPlaying.textContent =
+
         getEpisodeLabel(
           episode,
           savedIndex
         )
+
         +
+
         "　"
+
         +
+
         episode.title;
 
+
       currentPage =
+
         Math.floor(
-          savedIndex / PER_PAGE
+
+          savedIndex /
+
+          PER_PAGE
+
         ) + 1;
+
 
     }
 
@@ -1034,19 +1871,29 @@ async function init() {
 
   } catch(error) {
 
+
     console.error(
       error
     );
 
+
     episodesElement.innerHTML =
+
       '<div class="error">' +
+
       'PodcastのRSSを取得できませんでした。' +
+
       '<br><br>' +
+
       error.message +
+
       '</div>';
 
+
     nowPlaying.textContent =
+
       "読み込みに失敗しました";
+
 
   }
 
@@ -1058,4 +1905,5 @@ init();
 </script>
 
 </body>
+
 </html>
